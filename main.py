@@ -1,17 +1,17 @@
 import os
 import asyncio
 
-from agent_framework import ChatAgent, Tool, ToolInput, ToolOutput
-from agent_framework.openai import OpenAIChatModel, OpenAIResponsesClient
+from agent_framework import ChatAgent  #, Tool, ToolInput, ToolOutput
+from agent_framework.openai import OpenAIResponsesClient  # OpenAIChatModel
 
 from dotenv import load_dotenv
 load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["OPENAI_MODEL"] = os.getenv("OPENAI_MODEL")
+os.environ["OPENAI_RESPONSES_MODEL_ID"] = os.getenv("OPENAI_RESPONSES_MODEL_ID")
 
 async def ai_function():
     api_key = os.getenv("OPENAI_API_KEY")
-    model = os.getenv("OPENAI_MODEL")
+    model = os.getenv("OPENAI_RESPONSES_MODEL_ID", "gpt-4o")
     print(f"Using API Key: {api_key}")
     print(f"Using Model: {model}")
     print("="*40)
@@ -24,7 +24,9 @@ async def ai_function():
         instructions="You are a helpful assistant.",
         name = "ExplainBot"
         )
-    result = await agent.chat("Explain the theory of relativity in simple terms.")
+    result = await agent.run("Explain the theory of relativity in simple terms.")
+    # result = await agent.run("Provide a short explanation the significance of the year 2024 in technology.")
+    # result = "duh..."
     print("AI Response: ", result)
 
 
