@@ -1,4 +1,10 @@
 pip install agentframework
 # or use uv - my preferred
 
+---------------------------------------
+https://platform.openai.com/api-keys
+KeyForCapAiProject
+
+
+Switched from Claude Opus 4.5 to Claude Sonnet 4.5 (to save a bit of money in Github Copilot)
 
