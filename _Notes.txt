@@ -20,3 +20,8 @@ https://github.com/DeveloperAlex/ai20260124a
 https://learn.kodekloud.com/user/courses/youtube-labs-microsoft-agent-framework-fundamentals?utm_source=youtube&utm_medium=video&utm_campaign=microsoft_agent_fundamental_yt&utm_id=microsoft_agent_fudamentals_yt&utm_term=microsoft_agent_fudamentals_yt&utm_content=
 +++++
 
+
+I Google'd for "n8n mcp Claude code" and got Git Copilot to seemingly do the same.
+> Gotta try it out though.
+> This is the prompt i used: "can you connect to n8n?"
+

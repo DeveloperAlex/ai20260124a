@@ -1,0 +1,130 @@
+{
+  "description": "Example n8n workflows to act as MCP servers",
+  "workflows": [
+    {
+      "name": "MCP Discovery Endpoint",
+      "description": "This workflow returns a list of all available MCP tools",
+      "webhook_path": "/webhook/mcp-discovery",
+      "method": "GET",
+      "response_example": {
+        "tools": [
+          {
+            "name": "search_database",
+            "description": "Search the database for records",
+            "endpoint": "http://localhost:5678/webhook/search-database",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string",
+                  "description": "Search query"
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Maximum number of results",
+                  "default": 10
+                }
+              },
+              "required": ["query"]
+            }
+          },
+          {
+            "name": "send_email",
+            "description": "Send an email to a recipient",
+            "endpoint": "http://localhost:5678/webhook/send-email",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "to": {
+                  "type": "string",
+                  "description": "Email recipient"
+                },
+                "subject": {
+                  "type": "string",
+                  "description": "Email subject"
+                },
+                "body": {
+                  "type": "string",
+                  "description": "Email body"
+                }
+              },
+              "required": ["to", "subject", "body"]
+            }
+          },
+          {
+            "name": "get_weather",
+            "description": "Get current weather for a location",
+            "endpoint": "http://localhost:5678/webhook/get-weather",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "City name or coordinates"
+                }
+              },
+              "required": ["location"]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Search Database Tool",
+      "description": "Example MCP tool that searches a database",
+      "webhook_path": "/webhook/search-database",
+      "method": "POST",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "note": "Receives POST requests with {query, limit}"
+        },
+        {
+          "type": "Code",
+          "note": "Extract and validate input parameters"
+        },
+        {
+          "type": "Database Node (Postgres/MySQL/etc)",
+          "note": "Execute search query"
+        },
+        {
+          "type": "Code",
+          "note": "Format response as MCP tool output"
+        },
+        {
+          "type": "Respond to Webhook",
+          "note": "Return results in JSON format"
+        }
+      ]
+    },
+    {
+      "name": "Send Email Tool",
+      "description": "Example MCP tool that sends emails",
+      "webhook_path": "/webhook/send-email",
+      "method": "POST",
+      "nodes": [
+        {
+          "type": "Webhook",
+          "note": "Receives POST requests with {to, subject, body}"
+        },
+        {
+          "type": "Code",
+          "note": "Validate email parameters"
+        },
+        {
+          "type": "Send Email",
+          "note": "Send the email using configured provider"
+        },
+        {
+          "type": "Respond to Webhook",
+          "note": "Return success/failure status"
+        }
+      ]
+    }
+  ],
+  "n8n_code_node_examples": {
+    "discovery_response": "// Code node for MCP Discovery workflow\nconst tools = [\n  {\n    name: 'search_database',\n    description: 'Search the database for records',\n    endpoint: 'http://localhost:5678/webhook/search-database',\n    input_schema: {\n      type: 'object',\n      properties: {\n        query: { type: 'string', description: 'Search query' },\n        limit: { type: 'number', description: 'Max results', default: 10 }\n      },\n      required: ['query']\n    }\n  },\n  // Add more tools here\n];\n\nreturn [{ json: { tools } }];",
+    "tool_input_validation": "// Code node to validate tool inputs\nconst input = $input.first().json;\n\n// Validate required fields\nif (!input.query) {\n  throw new Error('Missing required field: query');\n}\n\nconst limit = input.limit || 10;\n\nreturn [{\n  json: {\n    query: input.query,\n    limit: Math.min(limit, 100) // Cap at 100\n  }\n}];",
+    "format_mcp_response": "// Code node to format response in MCP format\nconst results = $input.first().json;\n\nreturn [{\n  json: {\n    success: true,\n    data: results,\n    metadata: {\n      timestamp: new Date().toISOString(),\n      tool_name: 'search_database'\n    }\n  }\n}];"
+  }
+}
