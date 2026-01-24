@@ -1,5 +1,6 @@
 import os
 import asyncio
+import sys
 
 from agent_framework import ChatAgent  #, Tool, ToolInput, ToolOutput
 from agent_framework.openai import OpenAIResponsesClient  # OpenAIChatModel
@@ -24,14 +25,29 @@ async def ai_function():
         instructions="You are a helpful assistant.",
         name = "ExplainBot"
         )
-    result = await agent.run("Explain the theory of relativity in simple terms.")
-    # result = await agent.run("Provide a short explanation the significance of the year 2024 in technology.")
-    # result = "duh..."
-    print("AI Response: ", result)
+    # query = "Explain the theory of relativity in simple terms."
+    query = "Write a short story about a dolphin and her adventures in the sea."
+    # result = await agent.run(query)
+    stream = agent.run_stream(query)
+    async for chunk in stream:
+        if chunk.text:
+            print(chunk.text, end="", flush=True)
+    print("\n")
 
+def check_virtual_env():
+    """Check if running in virtual environment"""
+    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+        print(f"  [OK] Virtual environment active: {sys.prefix}")
+        return True
+    else:
+        print("  [ERROR] NOT running in virtual environment!")
+        return False
 
 async def main():
     # print("Hello from 20260124a!")
+    if not check_virtual_env():
+        print("Please activate your virtual environment (source .venv/bin/activate) and try again.")
+        return
     await ai_function()
 
 

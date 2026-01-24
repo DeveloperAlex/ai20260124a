@@ -8,3 +8,15 @@ KeyForCapAiProject
 
 Switched from Claude Opus 4.5 to Claude Sonnet 4.5 (to save a bit of money in Github Copilot)
 
+https://learn.kodekloud.com/user/playgrounds/kodekey
+> base_url="https://kodekey.ai.kodekloud.com/v1"
+> Add above alongside openai_api_key for OpenAIResponsesClient
+
+https://kodekloud.com/ai-playgrounds/azure-openai
+https://github.com/DeveloperAlex/ai20260124a
+
+
++++++
+https://learn.kodekloud.com/user/courses/youtube-labs-microsoft-agent-framework-fundamentals?utm_source=youtube&utm_medium=video&utm_campaign=microsoft_agent_fundamental_yt&utm_id=microsoft_agent_fudamentals_yt&utm_term=microsoft_agent_fudamentals_yt&utm_content=
++++++
+
