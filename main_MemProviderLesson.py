@@ -23,22 +23,22 @@ async def ai_function():
     chat_client = OpenAIResponsesClient(api_key=api_key, model=model,
                                         max_retries=3, max_response_tokens=1500, max_context_tokens=3000,
                                         max_total_tokens=4096, max_completion_tokens=1000)
-    agent = ChatAgent(
+    async with ChatAgent(
         chat_client=chat_client,
-        instructions="You are a helpful assistant.",
+        instructions="You are a friendly assistant. Ask the user about their favorite color and remember it for future conversations.",
         name = "ExplainBot"
         # context_provider=None,
-        )
-    chat_session = agent.get_new_thread()
+        ) as agent:
+            thread = agent.create_new_thread()
 
-    # query = "Explain the theory of relativity in simple terms."
-    query = "Write a short story about a dolphin and her adventures in the sea."
-    # result = await agent.run(query)
-    stream: AgentResponseUpdate = agent.run_stream(query, thread=chat_session)
-    async for chunk in stream:
-        if chunk.text:
-            print(chunk.text, end="", flush=True)
-    print("\n")
+            # query = "Explain the theory of relativity in simple terms."
+            query = "Write a short story about a dolphin and her adventures in the sea."
+            # result = await agent.run(query)
+            stream: AgentResponseUpdate = agent.run_stream(query, thread=thread)
+            async for chunk in stream:
+                if chunk.text:
+                    print(chunk.text, end="", flush=True)
+            print("\n")
 
 def check_virtual_env():
     """Check if running in virtual environment"""

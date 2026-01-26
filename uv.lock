@@ -19,6 +19,7 @@ dependencies = [
     { name = "agent-framework" },
     { name = "aiohttp" },
     { name = "asyncio" },
+    { name = "pydantic" },
     { name = "python-dotenv" },
 ]
 
@@ -27,6 +28,7 @@ requires-dist = [
     { name = "agent-framework", specifier = ">=1.0.0b260123" },
     { name = "aiohttp", specifier = ">=3.9.0" },
     { name = "asyncio", specifier = ">=4.0.0" },
+    { name = "pydantic", specifier = ">=2.12.5" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
 ]
 
