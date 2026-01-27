@@ -23,18 +23,23 @@ async def ai_function():
     chat_client = OpenAIResponsesClient(api_key=api_key, model=model,
                                         max_retries=3, max_response_tokens=1500, max_context_tokens=3000,
                                         max_total_tokens=4096, max_completion_tokens=1000)
-    agent = ChatAgent(
+    explainerAgent = ChatAgent(
         chat_client=chat_client,
         instructions="You are a helpful assistant.",
         name = "ExplainBot"
         # context_provider=None,
         )
-    chat_session = agent.get_new_thread()
+    chat_session = explainerAgent.get_new_thread()
+
+    summarizer = ChatAgent(
+        name="SummarizerAgent",
+        instructions="You are a summarization expert. Create concise summaries of conversations.",
+    )
 
     # query = "Explain the theory of relativity in simple terms."
     query = "Write a very short story about a dolphin and her adventures in the sea."
     # result = await agent.run(query)
-    stream: AgentResponseUpdate = agent.run_stream(query, thread=chat_session)
+    stream: AgentResponseUpdate = explainerAgent.run_stream(query, thread=chat_session)
     async for chunk in stream:
         if chunk.text:
             print(chunk.text, end="", flush=True)

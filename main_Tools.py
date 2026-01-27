@@ -2,7 +2,7 @@ import os
 import asyncio
 import sys
 
-from agent_framework import ChatAgent, AgentResponseUpdate  #, Tool, ToolInput, ToolOutput
+from agent_framework import ChatAgent, AgentResponseUpdate, ai_function  #, Tool, ToolInput, ToolOutput
 from agent_framework.openai import OpenAIResponsesClient  # OpenAIChatModel
 # from context_model import ContextModel
 
@@ -10,6 +10,16 @@ from dotenv import load_dotenv
 load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_RESPONSES_MODEL_ID"] = os.getenv("OPENAI_RESPONSES_MODEL_ID")
+
+@ai_function(
+    name="Get Weather",
+    description="Get the current weather for a given location."
+)
+def get_weather(location: str) -> str:
+    """Mock function to get weather for a location"""
+    # In a real implementation, this would call a weather API
+    return f"The current weather in {location} is sunny with a temperature of 25°C."
+
 
 async def ai_function():
     api_key = os.getenv("OPENAI_API_KEY")
