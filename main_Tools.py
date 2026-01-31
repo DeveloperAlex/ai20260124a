@@ -1,6 +1,8 @@
 import os
 import asyncio
 import sys
+from typing_extensions import Annotated
+from pydantic import Field
 
 from agent_framework import ChatAgent, AgentResponseUpdate, ai_function  #, Tool, ToolInput, ToolOutput
 from agent_framework.openai import OpenAIResponsesClient  # OpenAIChatModel
@@ -15,7 +17,10 @@ os.environ["OPENAI_RESPONSES_MODEL_ID"] = os.getenv("OPENAI_RESPONSES_MODEL_ID")
     name="Get Weather",
     description="Get the current weather for a given location."
 )
-def get_weather(location: str) -> str:
+def get_weather(
+    location: Annotated[str, Field(description="The location to get the weather for.")]
+    # arg1: Annotated[str, "The first argument"]
+) -> str:
     """Mock function to get weather for a location"""
     # In a real implementation, this would call a weather API
     return f"The current weather in {location} is sunny with a temperature of 25°C."
@@ -39,16 +44,25 @@ async def ai_function():
         name = "ExplainBot"
         # context_provider=None,
         )
+    agentWithTools = ChatAgent(
+        chat_client=chat_client,
+        instructions="You are a travel agent that helps user to find out the weather of a specific city.",
+        name = "TravelAgentBot",
+        # context_provider=None,
+        tools=[get_weather]
+        )
     chat_session = agent.get_new_thread()
 
-    # query = "Explain the theory of relativity in simple terms."
-    query = "Write a very short story about a dolphin and her adventures in the sea."
-    # result = await agent.run(query)
-    stream: AgentResponseUpdate = agent.run_stream(query, thread=chat_session)
-    async for chunk in stream:
-        if chunk.text:
-            print(chunk.text, end="", flush=True)
-    print("\n")
+    # query = "Write a very short story about a dolphin and her adventures in the sea."
+    # stream: AgentResponseUpdate = agent.run_stream(query, thread=chat_session)
+    # async for chunk in stream:
+    #     if chunk.text:
+    #         print(chunk.text, end="", flush=True)
+    # print("\n")
+
+    result = await agentWithTools.run("What's the weather like in Italy today?")
+    print(f"Result from agent with tools: {result.text}")
+
 
 def check_virtual_env():
     """Check if running in virtual environment"""
@@ -68,4 +82,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    print("\n\n\n\n\n" + "=+"*40 + "="*1)
     asyncio.run(main())

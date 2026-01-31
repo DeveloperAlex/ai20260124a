@@ -8,6 +8,7 @@ dependencies = [
     "agent-framework>=1.0.0b260123",
     "aiohttp>=3.9.0",
     "asyncio>=4.0.0",
+    "azure-ai-projects>=2.0.0b3",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
 ]

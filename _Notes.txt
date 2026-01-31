@@ -1,3 +1,7 @@
+source .venv/bin/activate
+uv add azure-ai-projects
+
+
 pip install agentframework
 # or use uv - my preferred
 
