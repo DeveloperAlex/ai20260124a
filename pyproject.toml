@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "agent-framework>=1.0.0b260123",
+    "agent-framework-a2a>=1.0.0b260123",
+    "agent-framework-devui>=1.0.0b260123",
     "aiohttp>=3.9.0",
     "asyncio>=4.0.0",
     "azure-ai-projects>=2.0.0b3",

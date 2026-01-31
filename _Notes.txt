@@ -1,5 +1,30 @@
 source .venv/bin/activate
 uv add azure-ai-projects
+uv add agent-framework-devui
+
+MAF udemy course:
+  * https://www.udemy.com/course/microsoft-foundry-ai-agents-foundry-iq-mcp-a2a/learn/lecture/53920203#overview
+  * https://github.com/kuljotSB/MicrosoftFoundry/tree/main/MicrosoftAgentFramework/AzureAIAgent-CloudAgent
+  * https://github.com/kuljotSB/MicrosoftFoundry/blob/main/MicrosoftAgentFramework/AzureAIAgent-CloudAgent/sequential-workflow.ipynb
+
+=======================================
+Steps for creating Mermaid flowchart:
+--> for "viz" look here: https://github.com/kuljotSB/MicrosoftFoundry/blob/main/MicrosoftAgentFramework/AzureAIAgent-CloudAgent/sequential-workflow-devui.py#L109
+
+(a) Run this to create a mermaid flowchart TD out of the agents:
+viz = WorkflowViz(workflow)
+mermaid_content = viz.to_mermaid()
+from IPython.display import Markdown, display
+display(Markdown(f"```mermaid\n{mermaid_content}\n```"))
+
+(b) workflow.md file (control-shift-V = converts the text to a mermaid flowchart):
+```mermaid
+flowchart TD
+  asdf;
+  adsf;
+  agent1 --> agent2
+
+=======================================
 
 
 pip install agentframework
